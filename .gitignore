@@ -1,0 +1,6 @@
+/node_modules/
+/.sass-cache/
+/dist/index.html
+/dist/images/
+/dist/css/style.min.css
+/dist/js/app.min.js
