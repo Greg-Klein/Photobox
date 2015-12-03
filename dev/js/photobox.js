@@ -1,8 +1,7 @@
 photobox = {
 	init : function() {
-		photobox.opacity = 0.7;
-		photobox.duration = 600;
-		photobox.flag == true;
+		photobox.opacity = 0.5;
+		photobox.duration = 500;
 		$("a[rel='photobox']").click(function(){
 			photobox.link = $(this).attr("href");
 			photobox.title = $(this).attr("title");
@@ -12,6 +11,7 @@ photobox = {
 	},
 
 	open : function(link, title) {
+		$("#photobox").remove();
 		if (typeof title == 'undefined') { title = ''; }
 		photobox.link = link;
 		photobox.title = title;
@@ -51,7 +51,9 @@ photobox = {
 	},
 
 	close : function() {
-		$("#photobox").remove();
+		$("#photobox").fadeOut(photobox.duration/2, function(){
+			$("#photobox").remove();
+		});
 	},
 
 	resize : function() {
