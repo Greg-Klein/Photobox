@@ -2,6 +2,7 @@ photobox = {
 	init : function() {
 		photobox.opacity = 0.7;
 		photobox.duration = 600;
+		photobox.flag == true;
 		$("a[rel='photobox']").click(function(){
 			photobox.link = $(this).attr("href");
 			photobox.title = $(this).attr("title");
@@ -11,6 +12,16 @@ photobox = {
 	},
 
 	open : function(link, title) {
+		// Timing function to avoid display problems
+		if(photobox.flag == false){
+			return false;
+		}
+		setTimeout(function(){
+			photobox.flag = true;
+		}, 500);
+		photobox.flag = false;
+		// End Timing function
+
 		if (typeof title == 'undefined') { title = ''; }
 		photobox.link = link;
 		photobox.title = title;
@@ -50,7 +61,7 @@ photobox = {
 	},
 
 	close : function() {
-		$("#photobox").fadeOut(photobox.duration, function(){
+		$("#photobox").fadeOut(photobox.duration/2, function(){
 			$("#photobox").remove();
 		});
 	},
