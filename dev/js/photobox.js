@@ -66,10 +66,10 @@ photobox = {
 		var newW = docW*0.85;
 		var newH = docH*0.85;
 
-		if(imgW > imgH && imgW > newW){
+		if(imgW >= imgH && imgW > newW){
 			photobox.width = newW;
 			photobox.height = newW/ratio;
-		} else if (imgH > imgW && imgH > newH){
+		} else if (imgH >= imgW && imgH > newH){
 			photobox.height = newH;
 			photobox.width = newH*ratio;
 		}
