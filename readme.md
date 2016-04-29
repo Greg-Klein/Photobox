@@ -4,6 +4,8 @@ Photobox
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
 
+You can see a demo on <a href="https://www.gregoryklein.fr" target="_blank">my personal website</a>
+
 ----------
 
 
