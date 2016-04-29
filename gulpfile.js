@@ -31,7 +31,7 @@ gulp.task('scss', function(){
 gulp.task('js', function () {
  
 	gulp.src('dev/js/*.js')
-    .pipe(uglify())
+    .pipe(uglify({preserveComments: 'license'}))
     .pipe(rename({
         suffix: ".min"
     }))
