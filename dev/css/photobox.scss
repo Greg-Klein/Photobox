@@ -1,3 +1,8 @@
+/*!
+ *	Photobox by Gregory Klein - http://www.gregoryklein.fr
+ *	Licensed under the MIT license
+ */
+
 #photobox__bg {
 	position: fixed;
 	top: 0;
@@ -35,6 +40,12 @@
 
 
 	transform: translate3D(-50%,-50%,0);
+}
+
+#photobox__title {
+	color: #fff;
+	font-size: 1.5em;
+	font-weight: 600;
 }
 
 #photobox__close {

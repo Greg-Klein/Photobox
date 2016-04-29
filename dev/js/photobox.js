@@ -1,11 +1,15 @@
+/*!
+ *	Photobox by Gregory Klein - http://www.gregoryklein.fr
+ *	Licensed under the MIT license
+ */
 photobox = {
 	init : function() {
 		photobox.opacity = 0.5;
 		photobox.duration = 500;
-		$("a[rel='photobox']").click(function(){
+		$(document.body).on('click', "a[rel='photobox']", function(){
 			photobox.link = $(this).attr("href");
 			photobox.title = $(this).attr("title");
-			photobox.open(photobox.link);
+			photobox.open(photobox.link, photobox.title);
 			return false;
 		});
 	},
@@ -25,8 +29,8 @@ photobox = {
 		photobox.img.src = photobox.link;
 		photobox.timer = window.setInterval(photobox.load,100);
 
-		$("#photobox__close").click(photobox.close);
-		$("#photobox__bg").click(photobox.close);
+		$(document.body).on('click', "#photobox__close", photobox.close);
+		$(document.body).on('click', "#photobox__bg", photobox.close);
 	},
 
 	load : function() {
@@ -41,7 +45,7 @@ photobox = {
 		photobox.width = photobox.img.width;
 		photobox.height = photobox.img.height;
 		photobox.resize();
-		$("#photobox__content").append('<img src="'+photobox.link+'"width="'+photobox.width+'" height="'+photobox.height+'">');
+		$("#photobox__content").append('<img src="'+photobox.link+'"width="'+photobox.width+'" height="'+photobox.height+'"><p id="photobox__title">'+photobox.title+'</p>');
 		$("#photobox__content img").hide();
 		$("#photobox__loader").hide();
 		$("#photobox__content").animate({width:photobox.width}, photobox.duration/2).animate({height:photobox.height}, photobox.duration/2, "linear", function(){
@@ -60,18 +64,30 @@ photobox = {
 		docW = window.innerWidth;
 		docH = window.innerHeight;
 
-		imgW = photobox.img.width;
-		imgH = photobox.img.height;
-		var ratio = imgW/imgH;
+		photobox.width = photobox.img.width;
+		photobox.height = photobox.img.height;
+		var ratio = photobox.width/photobox.height;
 		var newW = docW*0.85;
-		var newH = docH*0.85;
+		var newH = docH*0.85 - 60;
 
-		if(imgW >= imgH && imgW > newW){
-			photobox.width = newW;
-			photobox.height = newW/ratio;
-		} else if (imgH >= imgW && imgH > newH){
-			photobox.height = newH;
-			photobox.width = newH*ratio;
+		if(photobox.width >= photobox.height) {
+			if(photobox.width > newW){
+				photobox.width = newW;
+				photobox.height = newW / ratio;
+			}
+			if(photobox.height > newH){
+				photobox.height = newH;
+				photobox.width = newH * ratio;
+			}
+		} else {
+			if(photobox.height > newH){
+				photobox.height = newH;
+				photobox.width = newH * ratio;
+			}
+			if(photobox.width > newW){
+				photobox.width = newW;
+				photobox.height = newW / ratio;
+			}
 		}
 	}
 }
