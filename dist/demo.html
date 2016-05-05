@@ -6,8 +6,7 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/photobox.css">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/photobox.min.css">
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     </head>
@@ -16,7 +15,11 @@
     		<a href="images/test.jpg" rel="photobox" title="Snowy landscape">test</a>
     	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="js/photobox.js"></script>
-    <script src="js/app.js"></script>
+	<script src="js/photobox.min.js"></script>
+    <script>
+		$(document).ready(function(){
+			photobox.init();
+		});
+	</script>
     </body>
 </html>

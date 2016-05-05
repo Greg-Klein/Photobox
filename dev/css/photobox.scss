@@ -3,6 +3,8 @@
  *	Licensed under the MIT license
  */
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
 #photobox__bg {
 	position: fixed;
 	top: 0;
@@ -43,8 +45,8 @@
 }
 
 #photobox__title {
+	font-family: 'Open Sans', sans-serif;
 	color: #fff;
-	font-size: 1.5em;
 	font-weight: 600;
 }
 
