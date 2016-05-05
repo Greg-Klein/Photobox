@@ -56,18 +56,11 @@ gulp.task('img', function () {
         .pipe(livereload());
 });
 
-gulp.task('copy', function () {
-    gulp.src('dev/*.{php,html}')
-        .pipe(gulp.dest('dist/'))
-        .pipe(livereload());
-});
-
 gulp.task('watch', function() {
 	livereload.listen();
   	gulp.watch('dev/css/**/*.scss', ['scss']);
     gulp.watch('dev/js/*.js', ['js']);
-    gulp.watch('dev/*.{php,html}', ['copy']);
  
 });
  
-gulp.task('dist', ['copy', 'scss', 'js', 'img']);
+gulp.task('dist', ['scss', 'js', 'img']);
