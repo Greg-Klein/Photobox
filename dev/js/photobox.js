@@ -19,7 +19,7 @@ photobox = {
 		if (typeof title == 'undefined') { title = ''; }
 		photobox.link = link;
 		photobox.title = title;
-		$("body").append('<div id="photobox"><div id="photobox__bg"></div><i id="photobox__spinner"></i><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div></div></div>');
+		$("body").append('<div id="photobox"><div id="photobox__bg"><i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div></div></div>');
 		$("#photobox__container").hide();
 		$("#photobox__close").hide();
 		$("#photobox__bg").hide().fadeTo(photobox.duration, photobox.opacity);
@@ -47,7 +47,7 @@ photobox = {
 		photobox.resize();
 		$("#photobox__content").append('<img src="'+photobox.link+'"width="'+photobox.width+'" height="'+photobox.height+'"><p id="photobox__title">'+photobox.title+'</p>');
 		$("#photobox__content img").hide();
-		$("#photobox__spinner").hide();
+		//$("#photobox__spinner").hide();
 		$("#photobox__content").animate({width:photobox.width}, photobox.duration/2).animate({height:photobox.height}, photobox.duration/2, "linear", function(){
 		$("#photobox__close").show();
 		$("#photobox__content img").fadeIn();
