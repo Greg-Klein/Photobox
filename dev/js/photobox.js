@@ -6,7 +6,23 @@ photobox = {
 	init : function() {
 		photobox.opacity = 0.7;
 		photobox.duration = 500;
+        
+        photobox.album = {title: "", images: []};
 		$(document.body).on('click', "a[rel='photobox']", function(){
+            if(this.getAttribute("data-photobox")){
+                album = this.getAttribute("data-photobox");
+                url = this.getAttribute('href');
+                if(photobox.album.title == "") {
+                    photobox.album.title = album;
+                }
+                elements = document.getElementsByTagName('a');
+                $(elements).each(function() {
+                    if(this.getAttribute("data-photobox") == album && !(photobox.album.images).includes(url)){
+                        (photobox.album.images).push(url);
+                    }
+                });
+                photobox.currentIndex = (photobox.album.images).indexOf(url);
+            }
 			photobox.link = $(this).attr("href");
 			photobox.title = $(this).attr("title");
 			photobox.open(photobox.link, photobox.title);
