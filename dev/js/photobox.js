@@ -3,10 +3,16 @@
  *	Licensed under the MIT license
  */
 photobox = {
-	init : function() {
-		photobox.opacity = 0.7;
-		photobox.duration = 500;
-		photobox.interval = 500;      
+	init : function(args) {
+
+		var arguments = {};
+		if(args){
+			arguments = args;
+		}
+		
+		photobox.opacity = arguments.opacity || 0.7;
+		photobox.duration = arguments.duration || 500;
+		photobox.interval = arguments.interval || 500;      
 
         $(document.body).on('click', "#photobox__previous", photobox.previous);
 		$(document.body).on('click', "#photobox__next", photobox.next);
