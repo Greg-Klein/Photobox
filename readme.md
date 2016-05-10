@@ -4,8 +4,6 @@ Photobox
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
 
-You can see a demo on <a href="https://www.gregoryklein.fr" target="_blank">my personal website</a>
-
 ----------
 
 
@@ -27,8 +25,28 @@ In the body:
 
 At the end of the body:
 ```html
-<script src="path/to/photobox.min.js">
+<script src="path/to/photobox.min.js"></script>
+
+<script>
+	photobox.init();
+</script>
 ```
+
+You can pass options like this:
+```html
+<script>
+	photobox.init({
+		opacity: "0.8",
+		duration: "500"
+	});
+</script>
+```
+
+The options are:
+
+ - opacity: The opacity of the background (from 0 to 1)
+ - duration: The animation duration (Milliseconds)
 
 ----------
 > **Tip:** Don't forget to import jQuery **before** Photobox.
+
