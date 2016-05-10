@@ -5,7 +5,8 @@
 photobox = {
 	init : function() {
 		photobox.opacity = 0.7;
-		photobox.duration = 500;      
+		photobox.duration = 500;
+		photobox.interval = 500;      
 
         $(document.body).on('click', "#photobox__previous", photobox.previous);
 		$(document.body).on('click', "#photobox__next", photobox.next);
@@ -77,7 +78,7 @@ photobox = {
 			$("#photobox__content").empty();
 			$("#photobox__content").append(elmt);
 			photobox.currentIndex++;
-		}, 500);
+		}, photobox.interval);
 	},
 
 	stop: function() {
