@@ -6,17 +6,75 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/photobox.css">
     </head>
     <body>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                box-sizing: border-box;
+                font-family: 'Open Sans', sans-serif;
+                background-color: #00171F;
+            }
+            
+            section {
+                margin: 10px;
+                padding: 5px 10px;
+                background-color: #003459;
+                color: #fff;
+                box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+                border-radius: 5px;
+            }
+
+            h2 {
+                margin: 0 0 10px 0;
+                width: calc(100% - 10px);
+                padding: 5px;
+                border-bottom: 3px solid #fff;
+            }
+
+            a img {
+                box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+            }
+
+            a {
+                margin-right: 5px;
+            }
+
+            a:last-child {
+                margin-right: 0;
+            }
+
+        </style>
     	<main>
-    		<a href="images/test.jpg" rel="photobox" title="Snowy landscape">test</a>
+            <section>
+                <h2>Only one</h2>
+                <a href="images/coffee.jpg" rel="photobox" title="Coffee time">
+                    <img src="images/coffee.jpg" alt="" height="200px">
+                </a>
+            </section>
+            <section>
+                <h2>Album</h2>
+                <a href="images/test.jpg" rel="photobox" data-photobox="MyAlbum" title="Sunset on the city">
+                    <img src="images/test.jpg" alt="" height="200px">
+                </a>
+                <a href="images/test2.jpg" rel="photobox" data-photobox="MyAlbum" title="Rocky coast">
+                    <img src="images/test2.jpg" alt="" height="200px">
+                </a>
+            </section>
+    		
     	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="js/photobox.js"></script>
     <script>
 		$(document).ready(function(){
-			photobox.init();
+			photobox.init({
+                duration: "600",
+                opacity: "0.8"
+            });
 		});
 	</script>
     </body>
