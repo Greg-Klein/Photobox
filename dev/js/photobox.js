@@ -3,9 +3,14 @@
  *	Licensed under the MIT license
  */
 photobox = {
-	init : function() {
-		photobox.opacity = 0.7;
-		photobox.duration = 500;        
+	init : function(args) {
+		var arguments = {};
+		if(args){
+			arguments = args;
+		}
+		
+		photobox.opacity = arguments.opacity || 0.7;
+		photobox.duration = arguments.duration || 500;       
 
         $(document.body).on('click', "#photobox__previous", photobox.previous);
 		$(document.body).on('click', "#photobox__next", photobox.next);
@@ -31,16 +36,14 @@ photobox = {
                 }
                 photobox.currentIndex = photobox.album.images.indexOf(photobox.link);
             }
-			photobox.open(photobox.link, photobox.title);
+			photobox.open();
 			return false;
 		});
 	},
 
-	open : function(link, title) {
+	open : function() {
 		$("#photobox").remove();
-		if (typeof title == 'undefined') { title = ''; }
-		photobox.link = link;
-		photobox.title = title;
+		if (typeof photobox.title == 'undefined') { photobox.title = ''; }
 		$("body").append('<div id="photobox"><div id="photobox__bg">'+photobox.currentIndex+'<i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div></div></div>');
 		$("#photobox__container").hide();
 		$("#photobox__title").hide();
