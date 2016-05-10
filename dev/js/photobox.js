@@ -42,14 +42,6 @@ photobox = {
 		photobox.link = link;
 		photobox.title = title;
 		$("body").append('<div id="photobox"><div id="photobox__bg">'+photobox.currentIndex+'<i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div></div></div>');
-		if((photobox.album.images).length > 1){
-			if(photobox.currentIndex < (photobox.album.images).length - 1){
-				$("#photobox__container").append('<i id="photobox__next"></i>');
-			}
-			if(photobox.currentIndex > 0){
-				$("#photobox__container").append('<i id="photobox__previous"></i>');
-			}
-		}
 		$("#photobox__container").hide();
 		$("#photobox__title").hide();
 		$("#photobox__close").hide();
@@ -65,17 +57,23 @@ photobox = {
 
 	previous: function() {
 		photobox.currentIndex--;
-		var link = photobox.album.images[photobox.currentIndex],
-			title = photobox.getTitle(photobox.currentIndex);
-		photobox.open(link, title);
+		var link = photobox.album.images[photobox.currentIndex];
+		photobox.img.src = link;
+		photobox.link = link;
+		photobox.title = photobox.getTitle(photobox.currentIndex);
+		$("#photobox__spinner").hide().fadeIn();
+		photobox.timer = window.setInterval(photobox.load,100);
 		return false;
 	},
 
 	next: function() {
 		photobox.currentIndex++;
-		var link = photobox.album.images[photobox.currentIndex],
-			title = photobox.getTitle(photobox.currentIndex);
-		photobox.open(link, title);
+		var link = photobox.album.images[photobox.currentIndex];
+		photobox.img.src = link;
+		photobox.link = link;
+		photobox.title = photobox.getTitle(photobox.currentIndex);
+		$("#photobox__spinner").hide().fadeIn();
+		photobox.timer = window.setInterval(photobox.load,100);
 		return false;
 	},
 
@@ -100,12 +98,23 @@ photobox = {
 
 	anim : function() {
 		$("#photobox__container").show();
+		$("#photobox__content").empty();
+		$("#photobox__previous").remove();
+		$("#photobox__next").remove();
 		photobox.width = photobox.img.width;
 		photobox.height = photobox.img.height;
 		photobox.resize();
+		if((photobox.album.images).length > 1){
+			if(photobox.currentIndex < (photobox.album.images).length - 1){
+				$("#photobox__container").append('<i id="photobox__next"></i>');
+			}
+			if(photobox.currentIndex > 0){
+				$("#photobox__container").append('<i id="photobox__previous"></i>');
+			}
+		}
 		$("#photobox__content").append('<img src="'+photobox.link+'"width="'+photobox.width+'" height="'+photobox.height+'"><span id="photobox__title">'+photobox.title+'</span>');
 		$("#photobox__content img").hide();
-		//$("#photobox__spinner").hide();
+		$("#photobox__spinner").hide();
 		$("#photobox__content").animate({width:photobox.width}, photobox.duration/2).animate({height:photobox.height}, photobox.duration/2, "linear", function(){
 		$("#photobox__title").show();
 		$("#photobox__close").show();
