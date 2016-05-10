@@ -76,7 +76,6 @@ photobox = {
 			var elmt = photobox.images[photobox.currentIndex];
 			$("#photobox__content").empty();
 			$("#photobox__content").append(elmt);
-			$("#photobox__content").append('<span id="photobox__title">'+photobox.title+'</span>');
 			photobox.currentIndex++;
 		}, 500);
 	},
