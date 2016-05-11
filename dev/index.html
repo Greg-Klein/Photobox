@@ -56,6 +56,7 @@
                     <img src="images/coffee.jpg" alt="" height="200px">
                 </a>
             </section>
+
             <section>
                 <h2>Album</h2>
                 <a href="images/test.jpg" rel="photobox" data-photobox="MyAlbum" title="Sunset on the city">
@@ -72,9 +73,12 @@
     <script>
 		$(document).ready(function(){
 			photobox.init({
-                duration: "600",
-                opacity: "0.8"
-            });
+    			opacity: "0.8",
+    			duration: "600",
+    			interval: "500",
+                player: true,
+                wrapAround: true
+			});
 		});
 	</script>
     </body>
