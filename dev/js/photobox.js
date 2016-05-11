@@ -12,7 +12,9 @@ photobox = {
 		
 		photobox.opacity = arguments.opacity || 0.7;
 		photobox.duration = arguments.duration || 500;
-		photobox.interval = arguments.interval || 500;      
+		photobox.interval = arguments.interval || 500;
+		photobox.wrapAround = arguments.wrapAround || false;
+		photobox.player = arguments.player || false;
 
         $(document.body).on('click', "#photobox__previous", photobox.previous);
 		$(document.body).on('click', "#photobox__next", photobox.next);
@@ -49,9 +51,9 @@ photobox = {
 	open : function() {
 		$("#photobox").remove();
 		if (typeof photobox.title == 'undefined') { photobox.title = ''; }
-		$("body").append('<div id="photobox"><div id="photobox__bg">'+photobox.currentIndex+'<i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div></div></div>');
-		if((photobox.album.images).length > 1){
-			$("#photobox__container").append('<div id="photobox__control-panel"><i id="photobox__play"></i><i id="photobox__stop"></i></div>');
+		$("body").append('<div id="photobox"><div id="photobox__bg">'+photobox.currentIndex+'<i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div><div id="photobox__control-panel"></div></div></div>');
+		if((photobox.album.images).length > 1 && photobox.player){
+			$("#photobox__control-panel").append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
 		}
 		$("#photobox__container").hide();
 		$("#photobox__title").hide();
@@ -97,7 +99,12 @@ photobox = {
 	previous: function() {
 		photobox.currentIndex--;
 		if(photobox.currentIndex <= -1){
-			photobox.currentIndex = photobox.album.images.length - 1;
+			if(photobox.wrapAround){
+				photobox.currentIndex = photobox.album.images.length - 1;
+			} else {
+				photobox.currentIndex = 0;
+				return false;
+			}
 		}
 		var link = photobox.album.images[photobox.currentIndex];
 		photobox.img.src = link;
@@ -110,7 +117,12 @@ photobox = {
 	next: function() {
 		photobox.currentIndex++;
 		if(photobox.currentIndex >= photobox.album.images.length){
-			photobox.currentIndex = 0;
+			if(photobox.wrapAround){
+				photobox.currentIndex = 0;
+			} else {
+				photobox.currentIndex = photobox.album.images.length - 1;
+				return false;
+			}
 		}
 		var link = photobox.album.images[photobox.currentIndex];
 		photobox.img.src = link;
