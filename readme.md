@@ -1,5 +1,5 @@
-Photobox v1.4
-============
+Photobox v1.4.1
+===============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
 
@@ -42,14 +42,13 @@ You can pass options like this:
 </script>
 ```
 
-| Option       | Type | Description                |
-|--------------|------|----------------------------|
-| *duration*   | millisecond | Opening animation duration |
-| *opacity*    | float       | Opacity of the background (Between 0 and 1) |
-| *player*     | boolean     | Activate the player        |
-| *interval*   | millisecond | Duration between frames (For player)  |
-| *wrapAround* | boolean     | After the last image of an album you will go back to the first image       |
-|------------|----------------------------|
+| Option       | Type | Default | Description                |
+|--------------|------|---------|----------------------------|
+| *duration* | millisecond | 500 | Opening animation duration |
+| *opacity* | float | 0.7 | Opacity of the background (Between 0 and 1) |
+| *player* | boolean | false | Activate the player |
+| *interval* | millisecond | 500 | Duration between frames (For player) |
+| *wrapAround* | boolean | false | After the last image of an album you will go back to the first image |
 
 > **Tip:** Don't forget to import jQuery **before** Photobox.
 
