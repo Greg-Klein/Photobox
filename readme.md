@@ -1,5 +1,5 @@
-Photobox v1.4
-============
+Photobox v1.4.1
+===============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
 
