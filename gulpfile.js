@@ -10,11 +10,11 @@ var gulp = require('gulp'),
  
 gulp.task('scss', function(){
     
-    gulp.src('dev/css/**/*.scss')
+    gulp.src('src/css/**/*.scss')
     	.pipe(plumber())
     	.pipe(compass({
-    		css: 'dev/css',
-    		sass: 'dev/css',
+    		css: 'src/css',
+    		sass: 'src/css',
     		style: 'nested'
     	}))
         .pipe(autoprefixer({
@@ -30,7 +30,7 @@ gulp.task('scss', function(){
 
 gulp.task('js', function () {
  
-	gulp.src('dev/js/*.js')
+	gulp.src('src/js/*.js')
     .pipe(uglify({preserveComments: 'license'}))
     .pipe(rename({
         suffix: ".min"
@@ -40,14 +40,14 @@ gulp.task('js', function () {
 });
 
 gulp.task('img', function () {
-    gulp.src('dev/css/img/**/*.{jpg,png,gif}')
+    gulp.src('src/css/img/**/*.{jpg,png,gif}')
     	.pipe(plumber())
         .pipe(imagemin({
             progressive: true
         }))
         .pipe(gulp.dest('dist/css/img/'));
 
-    gulp.src('dev/images/**/*.{jpg,png,gif}')
+    gulp.src('src/images/**/*.{jpg,png,gif}')
         .pipe(plumber())
         .pipe(imagemin({
             progressive: true
@@ -58,8 +58,8 @@ gulp.task('img', function () {
 
 gulp.task('watch', function() {
 	livereload.listen();
-  	gulp.watch('dev/css/**/*.scss', ['scss']);
-    gulp.watch('dev/js/*.js', ['js']);
+  	gulp.watch('src/css/**/*.scss', ['scss']);
+    gulp.watch('src/js/*.js', ['js']);
  
 });
  
