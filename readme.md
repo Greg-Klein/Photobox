@@ -1,6 +1,5 @@
-Photobox
-========
-
+Photobox v1.4
+============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
 
@@ -11,7 +10,7 @@ Documentation
 ----------------------
 
 Using Photobox is really **easy**!
-Just add these 3 lines at the right place in your document
+Just add these lines at the right place in your document
 
 In the header:
 ```html
@@ -27,6 +26,7 @@ At the end of the body:
 ```html
 <script src="path/to/photobox.min.js"></script>
 
+/* Initialize Photobox */
 <script>
 	photobox.init();
 </script>
@@ -42,11 +42,14 @@ You can pass options like this:
 </script>
 ```
 
-The options are:
+| Option       | Type | Description                |
+|--------------|------|----------------------------|
+| *duration*   | millisecond | Opening animation duration |
+| *opacity*    | float       | Opacity of the background (Between 0 and 1) |
+| *player*     | boolean     | Activate the player        |
+| *interval*   | millisecond | Duration between frames (For player)  |
+| *wrapAround* | boolean     | After the last image of an album you will go back to the first image       |
+|------------|----------------------------|
 
- - opacity: The opacity of the background (from 0 to 1)
- - duration: The animation duration (Milliseconds)
-
-----------
 > **Tip:** Don't forget to import jQuery **before** Photobox.
 
