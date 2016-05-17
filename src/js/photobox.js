@@ -90,6 +90,7 @@ photobox = {
 
 		$("#photobox__play").hide();
 		$("#photobox__stop").show();
+		$("#photobox__index").remove();
 
 		/* Preload next image */
 		for(var i=0;i<photobox.album.images.length;i++){
@@ -265,8 +266,10 @@ photobox = {
 				}
 				$("#photobox__previous").remove();
 				$("#photobox__next").remove();
+				$("#photobox__index").remove();
 				$("#photobox__control-panel").append('<i id="photobox__previous"></i>');
 				$("#photobox__control-panel").append('<i id="photobox__next"></i>');
+				$("#photobox__control-panel").append('<span id="photobox__index">' + (photobox.currentIndex + 1) + '/' + (photobox.album.images).length +'</span>');
 			}
 		});
 	}

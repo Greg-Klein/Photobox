@@ -92,10 +92,17 @@
 
 #photobox__control-panel {
 	position: absolute;
-	right: 0;
+	right: 10px;
 	bottom: -35px;
 	height: 27px;
 	display: flex;
+	
+	span {
+		color: #fff;
+		font-weight: 600;
+		margin: 0 0 0 5px;
+		line-height: 27px;
+	}
 
 }
 
