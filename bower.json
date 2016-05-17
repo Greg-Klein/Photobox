@@ -1,0 +1,29 @@
+{
+  "name": "photobox-js",
+  "homepage": "https://github.com/Greg-Klein/photobox",
+  "authors": [
+    "Gregory Klein"
+  ],
+  "description": "A lightweigth image displaying jQuery module.",
+  "dependencies": {
+    "jquery": "~2.2.3"
+  },
+  "keywords": [
+    "photobox",
+    "image",
+    "display"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "gulpfile.js",
+    "src/",
+    "dist/demo.html",
+    ".gitignore",
+    "package.json"
+  ]
+}
