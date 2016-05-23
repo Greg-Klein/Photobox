@@ -49,7 +49,7 @@ photobox = {
                 	var el = photobox.allLinks[i],
                 		elAlbum = el.getAttribute("data-photobox"),
                 		currentAlbum = photobox.album.title;
-                    if((elAlbum == currentAlbum) && !$.inArray(el, albumImages)){
+                    if(elAlbum == currentAlbum){
                         albumImages.push(el.getAttribute('href'));
                     }
                 }
