@@ -44,13 +44,17 @@ photobox = {
 
                 /* Get all document links and test if they belong to the same album */
                 photobox.allLinks = document.getElementsByTagName('a');
+                var albumImages = photobox.album.images;
                 for(var i=0;i<photobox.allLinks.length;i++) {
-                	var el = photobox.allLinks[i];
-                    if(el.getAttribute("data-photobox") == photobox.album.title && !(photobox.album.images).includes(el)){
-                        (photobox.album.images).push(el.getAttribute('href'));
+                	var el = photobox.allLinks[i],
+                		elAlbum = el.getAttribute("data-photobox"),
+                		currentAlbum = photobox.album.title;
+                    if((elAlbum == currentAlbum) && !$.inArray(el, albumImages)){
+                        albumImages.push(el.getAttribute('href'));
                     }
                 }
-                photobox.currentIndex = photobox.album.images.indexOf(photobox.link);
+                photobox.currentIndex = albumImages.indexOf(photobox.link);
+                photobox.album.images = albumImages;
             }
 
             /* Open the image */
