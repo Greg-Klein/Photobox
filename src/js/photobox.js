@@ -18,13 +18,14 @@ photobox = {
 		photobox.player = arguments.player || false;
 
 		/* Click Listeners */
-        $(document.body).on('click', "#photobox__previous", photobox.previous);
-		$(document.body).on('click', "#photobox__next", photobox.next);
-		$(document.body).on('click', "#photobox__play", photobox.play);
-		$(document.body).on('click', "#photobox__stop", photobox.stop);
-		$(document.body).on('click', "#photobox__close", photobox.close);
-		$(document.body).on('click', "#photobox__bg", photobox.close);
-		$(document.body).on('click', "a[rel='photobox']", function(){
+		var docBody = $(document.body);
+        docBody.on('click', "#photobox__previous", photobox.previous);
+		docBody.on('click', "#photobox__next", photobox.next);
+		docBody.on('click', "#photobox__play", photobox.play);
+		docBody.on('click', "#photobox__stop", photobox.stop);
+		docBody.on('click', "#photobox__close", photobox.close);
+		docBody.on('click', "#photobox__bg", photobox.close);
+		docBody.on('click', "a[rel='photobox']", function(){
 
 			/* Initialize properties */
 			photobox.album = {title: "", images: []};
@@ -114,10 +115,11 @@ photobox = {
 			}
 
 			/* Append next image */
-			var elmt = photobox.images[photobox.currentIndex];
+			var elmt = photobox.images[photobox.currentIndex],
+				content = $("#photobox__content");
 			photobox.currentIndex++;
-			$("#photobox__content").empty();
-			$("#photobox__content").append(elmt);
+			content.empty();
+			content.append(elmt);
 		}, photobox.interval);
 	},
 
@@ -263,17 +265,19 @@ photobox = {
 
 			/* If an album is defined, append controls to the modal */
 			if((photobox.album.images).length > 1){
+				var controlPanel = $("#photobox__control-panel");
 				if(photobox.player){
 					$("#photobox__play").remove();
 					$("#photobox__stop").remove();
-					$("#photobox__control-panel").append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
+					controlPanel.append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
 				}
 				$("#photobox__previous").remove();
 				$("#photobox__next").remove();
 				$("#photobox__index").remove();
-				$("#photobox__control-panel").append('<i id="photobox__previous"></i>');
-				$("#photobox__control-panel").append('<i id="photobox__next"></i>');
-				$("#photobox__control-panel").append('<span id="photobox__index">' + (photobox.currentIndex + 1) + '/' + (photobox.album.images).length +'</span>');
+				
+				controlPanel.append('<i id="photobox__previous"></i>');
+				controlPanel.append('<i id="photobox__next"></i>');
+				controlPanel.append('<span id="photobox__index">' + (photobox.currentIndex + 1) + '/' + (photobox.album.images).length +'</span>');
 			}
 		});
 	}
