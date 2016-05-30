@@ -31,6 +31,7 @@ photobox = {
 			photobox.album = {title: "", images: []};
         	photobox.allLinks = [];
         	photobox.images = [];
+        	photobox.timer = [];
 			photobox.link = $(this).attr("href");
 			photobox.title = $(this).attr("title");
 
@@ -68,7 +69,6 @@ photobox = {
 
 	/* Image opening */
 	open : function() {
-
 		/* Remove previous instance and get title */
 		$("#photobox").remove();
 		if (typeof photobox.title == 'undefined') { photobox.title = ''; }
@@ -87,7 +87,7 @@ photobox = {
 		/* Preload the image */
 		photobox.img = new Image();
 		photobox.img.src = photobox.link;
-		photobox.timer = window.setInterval(photobox.load,100);
+		photobox.timer.push(window.setInterval(photobox.display,100));
 	},
 
 	/* Images sequence playing */
@@ -150,7 +150,7 @@ photobox = {
 		photobox.img.src = link;
 		photobox.link = link;
 		photobox.title = photobox.getTitle(photobox.currentIndex);
-		photobox.timer = window.setInterval(photobox.load,100);
+		photobox.timer.push(window.setInterval(photobox.display,100));
 
 		/* Return false to cancel the default action */
 		return false;
@@ -175,7 +175,7 @@ photobox = {
 		photobox.img.src = link;
 		photobox.link = link;
 		photobox.title = photobox.getTitle(photobox.currentIndex);
-		photobox.timer = window.setInterval(photobox.load,100);
+		photobox.timer.push(window.setInterval(photobox.display,100));
 
 		/* Return false to cancel the default action */
 		return false;
@@ -195,10 +195,13 @@ photobox = {
 	},
 
 	/* When preloading is complete, open the image */
-	load : function() {
+	display : function() {
 		if(photobox.img.complete){
 			window.clearInterval(photobox.timer);
+			for (var i = 0; i < photobox.timer.length; i++)
+        		window.clearInterval(photobox.timer[i]);
 			photobox.anim();
+			return false;
 		}
 	},
 
