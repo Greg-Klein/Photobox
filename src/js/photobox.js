@@ -26,7 +26,7 @@ photobox = {
 		docBody.on('click', "#photobox__stop", photobox.stop);
 		docBody.on('click', "#photobox__close", photobox.close);
 		docBody.on('click', "#photobox__bg", photobox.close);
-		docBody.off().on('click', "a[rel='photobox']", function(){
+		docBody.on('click', "a[rel='photobox']", function(){
 
 			/* Initialize properties */
 			photobox.album = {title: "", images: []};
