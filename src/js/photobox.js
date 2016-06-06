@@ -19,13 +19,13 @@ photobox = {
 
 		/* Click Listeners */
 		var docBody = $(document.body);
-        docBody.on('click', "#photobox__previous", photobox.previous);
-		docBody.on('click', "#photobox__next", photobox.next);
-		docBody.on('click', "#photobox__play", photobox.play);
-		docBody.on('click', "#photobox__stop", photobox.stop);
-		docBody.on('click', "#photobox__close", photobox.close);
-		docBody.on('click', "#photobox__bg", photobox.close);
-		docBody.on('click', "a[rel='photobox']", function(){
+        docBody.off().on('click', "#photobox__previous", photobox.previous);
+		docBody.off().on('click', "#photobox__next", photobox.next);
+		docBody.off().on('click', "#photobox__play", photobox.play);
+		docBody.off().on('click', "#photobox__stop", photobox.stop);
+		docBody.off().on('click', "#photobox__close", photobox.close);
+		docBody.off().on('click', "#photobox__bg", photobox.close);
+		docBody.off().on('click', "a[rel='photobox']", function(){
 
 			/* Initialize properties */
 			photobox.album = {title: "", images: []};
