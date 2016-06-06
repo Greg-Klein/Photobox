@@ -1,6 +1,10 @@
 {
   "name": "Photobox",
+<<<<<<< HEAD
   "version": "1.5.0",
+=======
+  "version": "1.5.1",
+>>>>>>> 1.5.1
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
