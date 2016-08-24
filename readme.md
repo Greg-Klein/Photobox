@@ -26,7 +26,7 @@ bower install photobox-js
 
 - In the body:
 ```html
-<a href="path/to/your/image" rel="photobox" title="anything you want">image or text</a>
+<img src="path/to/your/image" rel="photobox" title="anything you want">
 ```
 
 - At the end of the body:

@@ -1,288 +1,298 @@
 /*!
- *	Photobox by Gregory Klein - http://www.gregoryklein.fr
- *	Licensed under the MIT license
+ *  Photobox by Gregory Klein - http://www.gregoryklein.fr
+ *  Licensed under the MIT license
  */
-photobox = {
-	/* Initialisation */
-	init : function(args) {
-		var arguments = {};
-		if(args){
-			arguments = args;
-		}
-		
-		/* Parameters definition */
-		photobox.opacity = arguments.opacity || 0.7;
-		photobox.duration = arguments.duration || 500;
-		photobox.interval = arguments.interval || 500;
-		photobox.wrapAround = arguments.wrapAround || false;
-		photobox.player = arguments.player || false;
 
-		/* Click Listeners */
-		var docBody = $(document.body);
-		docBody.off();
-        docBody.on('click', "#photobox__previous", photobox.previous);
-		docBody.on('click', "#photobox__next", photobox.next);
-		docBody.on('click', "#photobox__play", photobox.play);
-		docBody.on('click', "#photobox__stop", photobox.stop);
-		docBody.on('click', "#photobox__close", photobox.close);
-		docBody.on('click', "#photobox__bg", photobox.close);
-		docBody.on('click', "a[rel='photobox']", function(){
+Photobox = {
+    init: function(args) {
 
-			/* Initialize properties */
-			photobox.album = {title: "", images: []};
-        	photobox.allLinks = [];
-        	photobox.images = [];
-        	photobox.timer = [];
-			photobox.link = $(this).attr("href");
-			photobox.title = $(this).attr("title");
+        /* Parameters definition */
+        var options = {};
+        options.opacity = args.opacity || 0.7;
+        options.duration = args.duration || 500;
+        options.interval = args.interval || 500;
+        options.wrapAround = args.wrapAround || false;
+        options.player = args.player || false;
 
-			/* If an album is defined */
-            if(this.getAttribute("data-photobox")){
-                album = this.getAttribute("data-photobox");
+        Photobox.options = options;
 
-                /* Get the title */
-                if(photobox.album.title == "") {
-                    photobox.album.title = album;
+        Photobox.album = {
+            title: "",
+            images: []
+        };
+
+        Photobox.allImgs = document.querySelectorAll('img[rel="photobox"]');
+        Photobox.allLinks = document.querySelectorAll('a[rel="photobox"]');
+
+        $(Photobox.allImgs).each(function() {
+            $(this).hover(function() {
+              $(this).css("cursor","pointer");
+            });
+        })
+
+        var docBody = $(document.body);
+        docBody.on('click', "#photobox__close", Photobox.close);
+        docBody.on('click', "#photobox__bg", Photobox.close);
+        docBody.on('click', "#photobox__previous", Photobox.previous);
+        docBody.on('click', "#photobox__next", Photobox.next);
+        docBody.on('click', "#photobox__play", Photobox.play);
+        docBody.on('click', "#photobox__stop", Photobox.stop);
+
+        docBody.on('click', "img[rel='photobox']", function(event) {
+            Photobox.clickItem(event, this);
+        });
+
+        docBody.on('click', "a[rel='photobox']", function(event) {
+            Photobox.clickItem(event, this);
+        });
+
+    },
+
+    clickItem: function(event, item) {
+        event.preventDefault();
+        Photobox.album.images = [];
+        if(item.getAttribute("data-pb-album")){
+            Photobox.album.title = Photobox.album.title || item.getAttribute("data-pb-album");
+            for(var i=0;i<Photobox.allImgs.length;i++) {
+                var el = Photobox.allImgs[i];
+                var elAlbum = el.getAttribute("data-pb-album");
+                if(elAlbum == Photobox.album.title){
+                    Photobox.album.images.push(el);
                 }
-
-                /* Get all document links and test if they belong to the same album */
-                photobox.allLinks = document.getElementsByTagName('a');
-                var albumImages = photobox.album.images;
-                for(var i=0;i<photobox.allLinks.length;i++) {
-                	var el = photobox.allLinks[i],
-                		elAlbum = el.getAttribute("data-photobox"),
-                		currentAlbum = photobox.album.title;
-                    if(elAlbum == currentAlbum){
-                        albumImages.push(el.getAttribute('href'));
-                    }
+            }
+            for(var i=0;i<Photobox.allLinks.length;i++) {
+                var el = Photobox.allLinks[i];
+                var elAlbum = el.getAttribute("data-pb-album");
+                if(elAlbum == Photobox.album.title){
+                    Photobox.album.images.push(el);
                 }
-                photobox.currentIndex = albumImages.indexOf(photobox.link);
-                photobox.album.images = albumImages;
+            }
+            Photobox.currentIndex = Photobox.album.images.indexOf(item);
+        } else {
+            if($(item).attr('href')){
+                var img = new Image();
+                img.src = $(item).attr('href');
+                img.title = $(item).attr("title");
+                item = img;
+            }
+            Photobox.album.images.push(item);
+            Photobox.currentIndex = 0;
+        }
+        
+        $("#photobox").remove();
+        $("body").append('<div id="photobox"><div id="photobox__bg"></div><div id="photobox__container"><div id="photobox__content"></div><i id="photobox__spinner"></i><div id="photobox__menubar"><i id="photobox__close"></i><div id="photobox__control-panel"><i id="photobox__previous"></i><i id="photobox__next"></i></div></div></div></div>');
+        $("#photobox__container").hide();
+        $("#photobox__menubar").hide();
+        $("#photobox__bg").hide().fadeTo(Photobox.options.duration, Photobox.options.opacity);
+        Photobox.draw();
+        return false;
+    },
+
+    draw: function() {
+        var item = Photobox.album.images[Photobox.currentIndex];
+
+        /* Load and display previous image */
+        Photobox.link = $(item).attr('src');
+        Photobox.title = $(item).attr("title");
+
+        Photobox.showSpinner(true);
+
+        /* Preload the image */
+        Photobox.img = new Image();
+        Photobox.img.src = Photobox.link;
+        Photobox.img.onload = Photobox.display();
+    },
+
+    /* When preloading is complete, open the image */
+    display : function() {
+        Photobox.anim();
+        return false;
+        /*if(Photobox.img.complete){
+            Photobox.anim();
+            return false;
+        }*/
+    },
+
+    /* Animate the modal */
+    anim : function() {
+        $("#photobox__container").fadeIn();
+        $("#photobox__content img").hide();
+
+        Photobox.resize();
+    },
+
+    /* Calculate the size of the modal to fit browser window and resize it */
+    resize : function() {
+        docW = window.innerWidth;
+        docH = window.innerHeight;
+
+        var width = Photobox.img.width;
+        var height = Photobox.img.height;
+        var ratio = width / height;
+        var newW = docW * 0.85; // 85% of the window width
+        var newH = docH * 0.85 - 60; // 85% of the window height - 60px for the menubar
+
+        if(width >= height) {
+            if(width > newW){
+                width = newW;
+                height = newW / ratio;
+            }
+            if(height > newH){
+                height = newH;
+                width = newH * ratio;
+            }
+        } else {
+            if(height > newH){
+                height = newH;
+                width = newH * ratio;
+            }
+            if(width > newW){
+                width = newW;
+                height = newW / ratio;
+            }
+        }
+
+        /* Animate the modal to resize */
+
+        if((Photobox.album.images).length > 1){
+            var controlPanel = $("#photobox__control-panel");
+            controlPanel.show();
+            if(Photobox.options.player){
+                $("#photobox__play").remove();
+                $("#photobox__stop").remove();
+                controlPanel.append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
             }
 
-            /* Open the image */
-			photobox.open();
+            $("#photobox__index").remove();
 
-			/* Return false to cancel the default action */
-			return false;
-		});
-	},
+            controlPanel.append('<span id="photobox__index">' + (Photobox.currentIndex + 1) + '/' + (Photobox.album.images).length +'</span>');
+        } else {
+            $('#photobox__previous').hide();
+            $('#photobox__next').hide();
+        }
 
-	/* Image opening */
-	open : function() {
-		/* Remove previous instance and get title */
-		$("#photobox").remove();
-		if (typeof photobox.title == 'undefined') { photobox.title = ''; }
+        $("#photobox__title").remove();
 
-		/* Append Photobox to the document */
-		$("body").append('<div id="photobox"><div id="photobox__bg">'+photobox.currentIndex+'<i id="photobox__spinner"></i></div><div id="photobox__container"><i id="photobox__close"></i><div id="photobox__content"></div><div id="photobox__control-panel"></div></div></div>');
+        if(!Photobox.playTimer) {
+            $("#photobox__content").animate({width:width}, Photobox.options.duration/2).animate({height:height}, Photobox.options.duration/2, "linear", function(){
+                Photobox.showSpinner(false);
 
-		$("#photobox__container").hide();
-		$("#photobox__title").hide();
-		$("#photobox__close").hide();
-		$("#photobox__previous").hide();
-		$("#photobox__next").hide();
-		$("#photobox__bg").hide().fadeTo(photobox.duration, photobox.opacity);
-		$("#photobox__spinner").hide().fadeIn();
+                /* Clear the content */
+                $("#photobox__content").empty();
 
-		/* Preload the image */
-		photobox.img = new Image();
-		photobox.img.src = photobox.link;
-		photobox.timer.push(window.setInterval(photobox.display,100));
-	},
+                $("#photobox__content").append('<img src="'+Photobox.link+'"width="'+width+'" height="'+height+'">');
+                $("#photobox__content img").show();
 
-	/* Images sequence playing */
-	play: function() {
+                $("#photobox__menubar").append('<span id="photobox__title">'+Photobox.title+'</span>');
+                $("#photobox__menubar").fadeIn();
+            });
+        } else {
+            $("#photobox__content").css('width', width).css('height', height);
+            Photobox.showSpinner(false);
 
-		$("#photobox__play").hide();
-		$("#photobox__stop").show();
-		$("#photobox__index").remove();
+            /* Clear the content */
+            $("#photobox__content").empty();
 
-		/* Preload next image */
-		for(var i=0;i<photobox.album.images.length;i++){
-			var img = new Image();
-			img.src = photobox.album.images[i];
-			img.width = photobox.width;
-			img.height = photobox.height;
-			photobox.images.push(img);
-		}
+            $("#photobox__content").append('<img src="'+Photobox.link+'"width="'+width+'" height="'+height+'">');
+            $("#photobox__content img").show();
 
-		/* Load next image */
-		photobox.playTimer = window.setInterval(function(){
+            $("#photobox__menubar").append('<span id="photobox__title">'+Photobox.title+'</span>');
+            $("#photobox__menubar").show();
+        }
+        
+    },
 
-			/* Loop to start at the end of the sequence */
-			if(photobox.currentIndex >= (photobox.images.length)){
-				photobox.currentIndex = 0;
-			}
+    /* Modal closing */
+    close : function() {
+        Photobox.stop();
+        $("#photobox").fadeOut((Photobox.options.duration / 2), function(){
+            $("#photobox").remove();
+        });
+    },
 
-			/* Append next image */
-			var elmt = photobox.images[photobox.currentIndex],
-				content = $("#photobox__content");
-			photobox.currentIndex++;
-			content.empty();
-			content.append(elmt);
-		}, photobox.interval);
-	},
+    /* When user click on "previous" button */
+    previous: function() {
+        Photobox.currentIndex--;
+        if(Photobox.currentIndex <= -1){
 
-	/* Stop playing */
-	stop: function() {
-		$("#photobox__stop").hide();
-		$("#photobox__play").show();
-		photobox.images = [];
-		window.clearInterval(photobox.playTimer);
-	},
+            /* If "wrapAround" option is enabled, loop to the last image when first image is reached */
+            Photobox.currentIndex = Photobox.options.wrapAround ? Photobox.album.images.length - 1 : 0;
+            if(Photobox.currentIndex == 0) { return false; };
+        }
 
-	/* When user click on "previous" button */
-	previous: function() {
-		photobox.currentIndex--;
-		if(photobox.currentIndex <= -1){
+        /* Load and display previous image */
+        Photobox.draw();
 
-			/* If "wrapAround" option is enabled, loop to the last image when first image is reached */
-			if(photobox.wrapAround){
-				photobox.currentIndex = photobox.album.images.length - 1;
-			} else {
-				photobox.currentIndex = 0;
-				return false;
-			}
-		}
+        /* Return false to cancel the default action */
+        return false;
+    },
 
-		/* Load and display previous image */
-		var link = photobox.album.images[photobox.currentIndex];
-		photobox.img.src = link;
-		photobox.link = link;
-		photobox.title = photobox.getTitle(photobox.currentIndex);
-		photobox.timer.push(window.setInterval(photobox.display,100));
+    /* When user click on "next" button */
+    next: function() {
+        Photobox.currentIndex++;
+        if(Photobox.currentIndex >= Photobox.album.images.length){
 
-		/* Return false to cancel the default action */
-		return false;
-	},
+            /* If "wrapAround" option is enabled, loop to the first image when last image is reached */
+            Photobox.currentIndex = (Photobox.options.wrapAround || Photobox.playTimer) ? 0 : Photobox.album.images.length - 1;
+            if(Photobox.currentIndex == (Photobox.album.images.length - 1)) { return false; };
+        }
 
-	/* When user click on "next" button */
-	next: function() {
-		photobox.currentIndex++;
-		if(photobox.currentIndex >= photobox.album.images.length){
+        var el = Photobox.album.images[Photobox.currentIndex];
 
-			/* If "wrapAround" option is enabled, loop to the first image when last image is reached */
-			if(photobox.wrapAround){
-				photobox.currentIndex = 0;
-			} else {
-				photobox.currentIndex = photobox.album.images.length - 1;
-				return false;
-			}
-		}
+        /* Load and display next image */
+        Photobox.draw();
 
-		/* Load and display previous image */
-		var link = photobox.album.images[photobox.currentIndex];
-		photobox.img.src = link;
-		photobox.link = link;
-		photobox.title = photobox.getTitle(photobox.currentIndex);
-		photobox.timer.push(window.setInterval(photobox.display,100));
+        /* Return false to cancel the default action */
+        return false;
+    },
 
-		/* Return false to cancel the default action */
-		return false;
-	},
+    /* Images sequence playing */
+    play: function() {
 
-	/* Get the title of the given album image */
-	getTitle: function(index) {
-		var title = "";
-		var link = photobox.album.images[index];
-		for(var i=0;i<photobox.allLinks.length;i++){
-			var el = photobox.allLinks[i];
-			if(el.getAttribute('href') == link){
-				title = el.getAttribute('title');
-			}
-		}
-		return title;
-	},
+        var images = [],
+            content = $("#photobox__content");
 
-	/* When preloading is complete, open the image */
-	display : function() {
-		if(photobox.img.complete){
-			window.clearInterval(photobox.timer);
-			for (var i = 0; i < photobox.timer.length; i++)
-        		window.clearInterval(photobox.timer[i]);
-			photobox.anim();
-			return false;
-		}
-	},
+        $("#photobox__play").hide();
+        $("#photobox__stop").show();
+        // $("#photobox__index").remove();
 
-	/* Animate the modal */
-	anim : function() {
-		$("#photobox__container").show();
+        /* Preload next image */
+        for(var i=0;i<Photobox.album.images.length;i++){
+            var img = new Image();
+            img.src = Photobox.album.images[i].src;
+            img.width = Photobox.width;
+            img.height = Photobox.height;
+            images.push(img);
+        }
 
-		/* Clear the content */
-		$("#photobox__content").empty();
+        /* Load next image */
+        Photobox.playTimer = window.setInterval(function(){
 
-		/* Animate and display the image */
-		$("#photobox__spinner").hide();
-		photobox.resize();
-	},
+            /* Loop to start at the end of the sequence */
+            if(Photobox.currentIndex >= images.length){
+                Photobox.currentIndex = 0;
+            }
 
-	/* Modal closing */
-	close : function() {
-		$("#photobox").fadeOut(photobox.duration/2, function(){
-			$("#photobox").remove();
-		});
+            Photobox.next();
+        }, Photobox.options.interval);
+    },
 
-		/* Stop the animation */
-		window.clearInterval(photobox.playTimer);
-	},
+    /* Stop playing */
+    stop: function() {
+        $("#photobox__stop").hide();
+        $("#photobox__play").show();
+        window.clearInterval(Photobox.playTimer);
+        Photobox.playTimer = undefined;
+    },
 
-	/* Calculate the size of the modal to fit browser window and resize it */
-	resize : function() {
-		docW = window.innerWidth;
-		docH = window.innerHeight;
-
-		photobox.width = photobox.img.width;
-		photobox.height = photobox.img.height;
-		var ratio = photobox.width/photobox.height;
-		var newW = docW*0.85;
-		var newH = docH*0.85 - 60;
-
-		if(photobox.width >= photobox.height) {
-			if(photobox.width > newW){
-				photobox.width = newW;
-				photobox.height = newW / ratio;
-			}
-			if(photobox.height > newH){
-				photobox.height = newH;
-				photobox.width = newH * ratio;
-			}
-		} else {
-			if(photobox.height > newH){
-				photobox.height = newH;
-				photobox.width = newH * ratio;
-			}
-			if(photobox.width > newW){
-				photobox.width = newW;
-				photobox.height = newW / ratio;
-			}
-		}
-
-		/* Animate the modal to resize */
-		$("#photobox__content").animate({width:photobox.width}, photobox.duration/2).animate({height:photobox.height}, photobox.duration/2, "linear", function(){
-			$("#photobox__content").append('<img src="'+photobox.link+'"width="'+photobox.width+'" height="'+photobox.height+'"><span id="photobox__title">'+photobox.title+'</span>');
-			$("#photobox__title").show();
-			$("#photobox__close").show();
-			$("#photobox__previous").show();
-			$("#photobox__next").show();
-
-			/* If an album is defined, append controls to the modal */
-			if((photobox.album.images).length > 1){
-				var controlPanel = $("#photobox__control-panel");
-				if(photobox.player){
-					$("#photobox__play").remove();
-					$("#photobox__stop").remove();
-					controlPanel.append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
-				}
-				$("#photobox__previous").remove();
-				$("#photobox__next").remove();
-				$("#photobox__index").remove();
-				
-				controlPanel.append('<i id="photobox__previous"></i>');
-				controlPanel.append('<i id="photobox__next"></i>');
-				controlPanel.append('<span id="photobox__index">' + (photobox.currentIndex + 1) + '/' + (photobox.album.images).length +'</span>');
-			}
-		});
-	}
+    showSpinner: function(flag) {
+        if(flag){
+            $("#photobox__spinner").hide().fadeIn();
+            $('#photobox__content').css('opacity', '0.5');
+        } else {
+            $("#photobox__spinner").hide();
+            $('#photobox__content').css('opacity', '1');
+        }
+        
+    }
 }
