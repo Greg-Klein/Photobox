@@ -2,7 +2,7 @@ Photobox v2.0.0
 ===============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
-[Demo](http://codepen.io/GKlein/pen/QEGXpz)
+[Demo](http://codepen.io/GKlein/full/QEGXpz/)
 
 ----------
 
