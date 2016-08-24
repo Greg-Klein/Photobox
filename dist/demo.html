@@ -52,18 +52,12 @@
         <main>
             <section>
                 <h2>Only one</h2>
-                <a href="images/coffee.jpg" rel="photobox" title="Coffee time">
-                    <img src="images/coffee.jpg" alt="" height="200px">
-                </a>
+                <img src="images/coffee.jpg" alt="" height="200px" rel="photobox" title="Coffee time">
             </section>
             <section>
                 <h2>Album</h2>
-                <a href="images/test.jpg" rel="photobox" data-photobox="MyAlbum" title="Sunset on the city">
-                    <img src="images/test.jpg" alt="" height="200px">
-                </a>
-                <a href="images/test2.jpg" rel="photobox" data-photobox="MyAlbum" title="Rocky coast">
-                    <img src="images/test2.jpg" alt="" height="200px">
-                </a>
+                <img src="images/test.jpg" alt="" height="200px" rel="photobox" data-pb-album="MyAlbum" title="Sunset on the city">
+                <img src="images/test2.jpg" alt="" height="200px" rel="photobox" data-pb-album="MyAlbum" title="Rocky coast">
             </section>
             
         </main>
@@ -71,7 +65,7 @@
     <script src="js/photobox.min.js"></script>
     <script>
         $(document).ready(function(){
-            photobox.init({
+            Photobox.init({
                 opacity: "0.8",
                 duration: "600",
                 interval: "500"

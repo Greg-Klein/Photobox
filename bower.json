@@ -6,7 +6,7 @@
   ],
   "description": "A lightweigth image displaying jQuery module.",
   "dependencies": {
-    "jquery": "~2.2.3"
+    "jquery": "latest"
   },
   "keywords": [
     "photobox",

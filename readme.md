@@ -1,4 +1,4 @@
-Photobox v1.5.3
+Photobox v2.0.0
 ===============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
@@ -26,11 +26,16 @@ bower install photobox-js
 
 - In the body:
 ```html
-<a href="path/to/your/image" rel="photobox" title="anything you want">image or text</a>
+<img src="path/to/your/image" rel="photobox" title="anything you want">
+```
+and/or
+```html
+<a href="path/to/your/image" rel="photobox" title="anything you want">
 ```
 
 - At the end of the body:
 ```html
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script src="bower_components/photobox-js/dist/js/photobox.min.js">
 
 /* Initialize Photobox */
