@@ -90,17 +90,11 @@ Photobox = {
         /* Preload the image */
         Photobox.img = new Image();
         Photobox.img.src = Photobox.link;
-        Photobox.img.onload = Photobox.display();
-    },
 
-    /* When preloading is complete, open the image */
-    display : function() {
-        Photobox.anim();
-        return false;
-        /*if(Photobox.img.complete){
+        Photobox.img.onload = function() {
             Photobox.anim();
-            return false;
-        }*/
+        }
+        
     },
 
     /* Animate the modal */
