@@ -21,10 +21,9 @@ Photobox = {
             images: []
         };
 
-        Photobox.allImgs = document.querySelectorAll('img[rel="photobox"]');
-        Photobox.allLinks = document.querySelectorAll('a[rel="photobox"]');
+        Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
 
-        $(Photobox.allImgs).each(function() {
+        $(Photobox.allItems).each(function() {
             $(this).hover(function() {
               $(this).css("cursor","pointer");
             });
@@ -38,11 +37,7 @@ Photobox = {
         docBody.on('click', "#photobox__play", Photobox.play);
         docBody.on('click', "#photobox__stop", Photobox.stop);
 
-        docBody.on('click', "img[rel='photobox']", function(event) {
-            Photobox.clickItem(event, this);
-        });
-
-        docBody.on('click', "a[rel='photobox']", function(event) {
+        docBody.on('click', "*[rel='photobox']", function(event) {
             Photobox.clickItem(event, this);
         });
 
@@ -51,30 +46,19 @@ Photobox = {
     clickItem: function(event, item) {
         event.preventDefault();
         Photobox.album.images = [];
+
         if(item.getAttribute("data-pb-album")){
             Photobox.album.title = Photobox.album.title || item.getAttribute("data-pb-album");
-            for(var i=0;i<Photobox.allImgs.length;i++) {
-                var el = Photobox.allImgs[i];
+            for(var i=0;i<Photobox.allItems.length;i++) {
+                var el = Photobox.allItems[i];
                 var elAlbum = el.getAttribute("data-pb-album");
                 if(elAlbum == Photobox.album.title){
                     Photobox.album.images.push(el);
                 }
             }
-            for(var i=0;i<Photobox.allLinks.length;i++) {
-                var el = Photobox.allLinks[i];
-                var elAlbum = el.getAttribute("data-pb-album");
-                if(elAlbum == Photobox.album.title){
-                    Photobox.album.images.push(el);
-                }
-            }
+            
             Photobox.currentIndex = Photobox.album.images.indexOf(item);
         } else {
-            if($(item).attr('href')){
-                var img = new Image();
-                img.src = $(item).attr('href');
-                img.title = $(item).attr("title");
-                item = img;
-            }
             Photobox.album.images.push(item);
             Photobox.currentIndex = 0;
         }
@@ -84,15 +68,21 @@ Photobox = {
         $("#photobox__container").hide();
         $("#photobox__menubar").hide();
         $("#photobox__bg").hide().fadeTo(Photobox.options.duration, Photobox.options.opacity);
-        Photobox.draw();
+        Photobox.draw(item);
         return false;
     },
 
-    draw: function() {
-        var item = Photobox.album.images[Photobox.currentIndex];
+    draw: function(item) {
+        var item = item || Photobox.album.images[Photobox.currentIndex];
 
-        /* Load and display previous image */
-        Photobox.link = $(item).attr('src');
+        if(item.nodeName == "IMG"){
+            Photobox.link = $(item).attr('src');  
+        } else if (item.nodeName == "A") {
+            Photobox.link = $(item).attr('href');
+        } else {
+            Photobox.link = '';
+        }
+        
         Photobox.title = $(item).attr("title");
 
         Photobox.showSpinner(true);
