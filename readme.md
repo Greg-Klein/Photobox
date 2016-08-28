@@ -1,4 +1,4 @@
-Photobox v2.0.2
+Photobox v2.0.4
 ===============
 
 Welcome to Photobox, a lightweigth image displaying jQuery module.
@@ -35,7 +35,7 @@ and/or
 
 - At the end of the body:
 ```html
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/photobox-js/dist/js/photobox.min.js">
 
 /* Initialize Photobox */
@@ -43,6 +43,8 @@ and/or
 	photobox.init();
 </script>
 ```
+
+Add the attribute data-pb-album="Your album name" to group images.
 
 You can pass options like this:
 ```html
