@@ -3,7 +3,10 @@
  *	Photobox by Gregory Klein - http://www.gregoryklein.fr
  *	Licensed under the MIT license
  */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url(https://fonts.googleapis.com/css?family=Lato);
+#photobox {
+  font-family: 'Lato', sans-serif; }
+
 #photobox__bg {
   position: fixed;
   top: 0;
@@ -61,7 +64,6 @@
   position: absolute;
   bottom: -35px;
   left: 50px;
-  font-family: 'Open Sans', sans-serif;
   color: #fff; }
 
 #photobox__close, #photobox__next, #photobox__previous, #photobox__play, #photobox__stop {
