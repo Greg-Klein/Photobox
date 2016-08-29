@@ -64,7 +64,7 @@ Photobox = {
         }
         
         $("#photobox").remove();
-        $("body").append('<div id="photobox"><div id="photobox__bg"></div><div id="photobox__container"><div id="photobox__content"></div><i id="photobox__spinner"></i><div id="photobox__menubar"><i id="photobox__close"></i><div id="photobox__control-panel"><i id="photobox__previous"></i><i id="photobox__next"></i></div></div></div></div>');
+        $("body").append('<div id="photobox"><div id="photobox__bg"><i id="photobox__spinner"></i></div><div id="photobox__container"><div id="photobox__content"></div><div id="photobox__menubar"><i id="photobox__close"></i><div id="photobox__control-panel"><i id="photobox__previous"></i><i id="photobox__next"></i></div></div></div></div>');
         $("#photobox__container").hide();
         $("#photobox__menubar").hide();
         $("#photobox__bg").hide().fadeTo(Photobox.options.duration, Photobox.options.opacity);
