@@ -21,14 +21,6 @@ Photobox = {
             images: []
         };
 
-        Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
-
-        $(Photobox.allItems).each(function() {
-            $(this).hover(function() {
-              $(this).css("cursor","pointer");
-            });
-        })
-
         var docBody = $(document.body);
         docBody.on('click', "#photobox__close", Photobox.close);
         docBody.on('click', "#photobox__bg", Photobox.close);
@@ -38,6 +30,18 @@ Photobox = {
         docBody.on('click', "#photobox__stop", Photobox.stop);
 
         docBody.on('click', "*[rel='photobox']", function(event) {
+            Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
+            Photobox.album = {
+                title: "",
+                images: []
+            };
+
+            $(Photobox.allItems).each(function() {
+                $(this).hover(function() {
+                  $(this).css("cursor","pointer");
+                });
+            });
+
             Photobox.clickItem(event, this);
         });
 
@@ -141,7 +145,7 @@ Photobox = {
         if((Photobox.album.images).length > 1){
             var controlPanel = $("#photobox__control-panel");
             controlPanel.show();
-            if(Photobox.options.player){
+            if(Photobox.options.player && !Photobox.playTimer){
                 $("#photobox__play").remove();
                 $("#photobox__stop").remove();
                 controlPanel.append('<i id="photobox__play"></i><i id="photobox__stop"></i>');
@@ -243,7 +247,12 @@ Photobox = {
         /* Preload next image */
         for(var i=0;i<Photobox.album.images.length;i++){
             var img = new Image();
-            img.src = Photobox.album.images[i].src;
+            var item = Photobox.album.images[i];
+            if(item.nodeName == 'IMG') {
+                img.src = Photobox.album.images[i].src;
+            } else if (item.nodeName == 'A') {
+                img.src = Photobox.album.images[i].href;
+            }
             img.width = Photobox.width;
             img.height = Photobox.height;
             images.push(img);
