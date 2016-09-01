@@ -89,7 +89,9 @@ Photobox = {
         
         Photobox.title = $(item).attr("title");
 
-        Photobox.showSpinner(true);
+        if(!Photobox.playTimer) {
+            Photobox.showSpinner(true);
+        }
 
         /* Preload the image */
         Photobox.img = new Image();
@@ -103,8 +105,10 @@ Photobox = {
 
     /* Animate the modal */
     anim : function() {
-        $("#photobox__container").fadeIn();
-        $("#photobox__content img").hide();
+        if(!Photobox.playTimer) {
+            $("#photobox__container").fadeIn();
+            $("#photobox__content img").hide();
+        }
 
         Photobox.resize();
     },
@@ -181,11 +185,11 @@ Photobox = {
             /* Clear the content */
             $("#photobox__content").empty();
 
+            $("#photobox__content img").attr('src', Photobox.link)
+
             $("#photobox__content").append('<img src="'+Photobox.link+'"width="'+width+'" height="'+height+'">');
-            $("#photobox__content img").show();
 
             $("#photobox__menubar").append('<span id="photobox__title">'+Photobox.title+'</span>');
-            $("#photobox__menubar").show();
         }
         
     },
