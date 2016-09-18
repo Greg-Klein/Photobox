@@ -21,7 +21,14 @@ Photobox = {
             images: []
         };
 
-        var docBody = $(document.body);
+        // Get a reference to the last interval +1
+        var interval_id = window.setInterval(function(){}, 9999);
+
+        // Clear all intervals
+        for (var i = 1; i < interval_id; i++)
+                window.clearInterval(i);
+
+        var docBody = $('body');
         docBody.on('click', "#photobox__close", Photobox.close);
         docBody.on('click', "#photobox__bg", Photobox.close);
         docBody.on('click', "#photobox__previous", Photobox.previous);
@@ -147,6 +154,16 @@ Photobox = {
         /* Animate the modal to resize */
 
         if((Photobox.album.images).length > 1){
+            $(document).on('keyup', function(e){
+                console.log(e);
+                if(e.keyCode == 39) {
+                    $(document).off('keyup');
+                    Photobox.next();
+                } else if(e.keyCode == 37) {
+                    $(document).off('keyup');
+                    Photobox.previous();
+                }
+            });
             var controlPanel = $("#photobox__control-panel");
             controlPanel.show();
             if(Photobox.options.player && !Photobox.playTimer){
@@ -200,6 +217,7 @@ Photobox = {
         $("#photobox").fadeOut((Photobox.options.duration / 2), function(){
             $("#photobox").remove();
         });
+        $(document).off('keyup');
     },
 
     /* When user click on "previous" button */
@@ -262,7 +280,6 @@ Photobox = {
             images.push(img);
         }
 
-        /* Load next image */
         Photobox.playTimer = window.setInterval(function(){
 
             /* Loop to start at the end of the sequence */
