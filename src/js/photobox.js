@@ -82,6 +82,11 @@ Photobox = {
   },
 
   draw: function(item) {
+    Photobox.lock = true;
+    window.setTimeout(function() {
+      Photobox.lock = false;
+    }, 100);
+
     item = item || Photobox.album.images[Photobox.currentIndex];
 
     if(item.nodeName === 'IMG') {
@@ -222,16 +227,18 @@ Photobox = {
 
   /* When user click on "previous" button */
   previous: function() {
-    Photobox.currentIndex--;
-    if(Photobox.currentIndex <= -1) {
+    if(!Photobox.lock) {
+      Photobox.currentIndex--;
+      if(Photobox.currentIndex <= -1) {
 
-      /* If "wrapAround" option is enabled, loop to the last image when first image is reached */
-      Photobox.currentIndex = Photobox.options.wrapAround ? Photobox.album.images.length - 1 : 0;
-      if(Photobox.currentIndex === 0) { return false; }
+        /* If "wrapAround" option is enabled, loop to the last image when first image is reached */
+        Photobox.currentIndex = Photobox.options.wrapAround ? Photobox.album.images.length - 1 : 0;
+        if(Photobox.currentIndex === 0) { return false; }
+      }
+
+      /* Load and display previous image */
+      Photobox.draw();
     }
-
-    /* Load and display previous image */
-    Photobox.draw();
 
     /* Return false to cancel the default action */
     return false;
@@ -239,16 +246,18 @@ Photobox = {
 
   /* When user click on "next" button */
   next: function() {
-    Photobox.currentIndex++;
-    if(Photobox.currentIndex >= Photobox.album.images.length) {
+    if(!Photobox.lock) {
+      Photobox.currentIndex++;
+      if(Photobox.currentIndex >= Photobox.album.images.length) {
 
-      /* If "wrapAround" option is enabled, loop to the first image when last image is reached */
-      Photobox.currentIndex = (Photobox.options.wrapAround || Photobox.playTimer) ? 0 : Photobox.album.images.length - 1;
-      if(Photobox.currentIndex === (Photobox.album.images.length - 1)) { return false; }
+        /* If "wrapAround" option is enabled, loop to the first image when last image is reached */
+        Photobox.currentIndex = (Photobox.options.wrapAround || Photobox.playTimer) ? 0 : Photobox.album.images.length - 1;
+        if(Photobox.currentIndex === (Photobox.album.images.length - 1)) { return false; }
+      }
+
+      /* Load and display next image */
+      Photobox.draw();
     }
-
-    /* Load and display next image */
-    Photobox.draw();
 
     /* Return false to cancel the default action */
     return false;
