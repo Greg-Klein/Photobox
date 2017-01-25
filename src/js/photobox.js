@@ -35,6 +35,11 @@ Photobox = {
     $docBody.on('click', '#photobox__play', Photobox.play);
     $docBody.on('click', '#photobox__stop', Photobox.stop);
 
+    $docBody.on('photoboxOpen', function(event) {
+      var item = event.detail;
+      Photobox.clickItem(event, item);
+    });
+
     $docBody.on('click', '*[rel="photobox"]', function(event) {
       Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
       Photobox.album = {
