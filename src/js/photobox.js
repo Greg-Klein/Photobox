@@ -15,6 +15,14 @@ Photobox = {
       player: args.player || false
     };
 
+    Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
+
+    $(Photobox.allItems).each(function() {
+      $(this).hover(function() {
+        $(this).css('cursor', 'pointer');
+      });
+    });
+
     Photobox.album = {
       title: '',
       images: []
@@ -41,18 +49,6 @@ Photobox = {
     });
 
     $docBody.on('click', '*[rel="photobox"]', function(event) {
-      Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
-      Photobox.album = {
-        title: '',
-        images: []
-      };
-
-      $(Photobox.allItems).each(function() {
-        $(this).hover(function() {
-          $(this).css('cursor', 'pointer');
-        });
-      });
-
       Photobox.clickItem(event, this);
     });
   },
