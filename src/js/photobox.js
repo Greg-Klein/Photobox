@@ -15,7 +15,28 @@ Photobox = {
       player: args.player || false
     };
 
-    Photobox.allItems = document.querySelectorAll('*[rel="photobox"]');
+    Photobox.update();
+
+    var $docBody = $('body');
+    $docBody.off();
+    $docBody.on('click', '#photobox__close', Photobox.close);
+    $docBody.on('click', '#photobox__bg', Photobox.close);
+    $docBody.on('click', '#photobox__previous', Photobox.previous);
+    $docBody.on('click', '#photobox__next', Photobox.next);
+    $docBody.on('click', '#photobox__play', Photobox.play);
+    $docBody.on('click', '#photobox__stop', Photobox.stop);
+    $docBody.on('click', '*[rel="photobox"]', function(e) {
+      Photobox.clickItem(e, this);
+    });
+
+    document.addEventListener('photoboxOpen', function(e) {
+      var item = e.detail;
+      Photobox.clickItem(e, item);
+    });
+  },
+
+  update: function() {
+    Photobox.allItems = [].slice.call(document.querySelectorAll('*[rel="photobox"]'));
 
     $(Photobox.allItems).each(function() {
       $(this).hover(function() {
@@ -27,34 +48,10 @@ Photobox = {
       title: '',
       images: []
     };
-
-    // Get a reference to the last interval +1
-    var intervalId = window.setInterval(function() {}, 9999);
-
-    // Clear all intervals
-    for (var i = 1; i < intervalId; i++)
-            window.clearInterval(i);
-
-    var $docBody = $('body');
-    $docBody.on('click', '#photobox__close', Photobox.close);
-    $docBody.on('click', '#photobox__bg', Photobox.close);
-    $docBody.on('click', '#photobox__previous', Photobox.previous);
-    $docBody.on('click', '#photobox__next', Photobox.next);
-    $docBody.on('click', '#photobox__play', Photobox.play);
-    $docBody.on('click', '#photobox__stop', Photobox.stop);
-
-    $docBody.on('photoboxOpen', function(event) {
-      var item = event.detail;
-      Photobox.clickItem(event, item);
-    });
-
-    $docBody.on('click', '*[rel="photobox"]', function(event) {
-      Photobox.clickItem(event, this);
-    });
   },
 
-  clickItem: function(event, item) {
-    event.preventDefault();
+  clickItem: function(e, item) {
+    e.preventDefault();
     Photobox.album.images = [];
 
     if(item.getAttribute('data-pb-album')) {
