@@ -15,6 +15,11 @@ Photobox = {
       player: args.player || false
     };
 
+    Photobox.album = {
+      title: '',
+      images: []
+    };
+
     Photobox.update();
 
     var $docBody = $('body');
@@ -44,15 +49,12 @@ Photobox = {
       });
     });
 
-    Photobox.album = {
-      title: '',
-      images: []
-    };
+    Photobox.album.images = [];
   },
 
   clickItem: function(e, item) {
     e.preventDefault();
-    Photobox.album.images = [];
+    Photobox.update();
 
     if(item.getAttribute('data-pb-album')) {
       Photobox.album.title = Photobox.album.title || item.getAttribute('data-pb-album');
