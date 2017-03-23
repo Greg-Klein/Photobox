@@ -31,10 +31,10 @@ gulp.task('scss', function(){
 gulp.task('js', function () {
  
 	gulp.src('src/js/*.js')
-    .pipe(uglify({preserveComments: 'license'}))
-    .pipe(rename({
-        suffix: ".min"
-    }))
+    //.pipe(uglify({preserveComments: 'license'}))
+    //.pipe(rename({
+    //    suffix: ".min"
+    //}))
 	.pipe(gulp.dest('dist/js/'))
 	.pipe(livereload());
 });
